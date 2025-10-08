@@ -1,18 +1,21 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('test form', async ({ page }) => {
+  // 1. ไปที่หน้าหลักของแอปพลิเคชัน
+  await page.goto('/'); 
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+  // 2. ระบุและกรอกชื่อ (Your name)
+  await page.getByLabel('Your name *').fill('Akkrawut Chodchoi');
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  // 3. ระบุและกรอกอายุ (Your age)
+  await page.getByLabel('Your age *').fill('20');
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // 4. คลิกยอมรับเงื่อนไข (I accept the license and terms)
+  await page.getByLabel('I accept the license and terms').check();
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // 5. คลิกปุ่ม Submit
+  await page.getByRole('button', { name: 'Submit' }).click();
+
+  // 6. ตรวจสอบว่ามี Notification "Submitted" แสดงขึ้นมา
+  await expect(page.getByRole('alert', { name: 'Submitted' })).toBeVisible();
 });
